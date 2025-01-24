@@ -20,75 +20,93 @@
             animation: gradientAnimation 10s ease infinite;
             overflow: hidden;
         }
-
+    
         @keyframes gradientAnimation {
             0% {
                 background-position: 0% 50%;
             }
-
+    
             50% {
                 background-position: 100% 50%;
             }
-
+    
             100% {
                 background-position: 0% 50%;
             }
         }
-
+    
         .todo-container {
             background: white;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 700px;
+            max-width: 760px;
         }
-
+    
         .task-text.completed {
             text-decoration: line-through;
             opacity: 0.6;
         }
-
+    
         #taskList {
             max-height: 200px;
             overflow-y: auto;
             scrollbar-width: thin;
-            scrollbar-color: #444 #f0f0f0;
-            /* Firefox */
+            scrollbar-color: #9b4dca transparent; /* Only purple bar, no track for Firefox */
             transition: all 0.3s ease;
-            /* Smooth transition */
         }
-
+    
+        /* Webkit-based browsers (Chrome, Safari, Edge) */
+        ::-webkit-scrollbar {
+            width: 50% !important; /* Increased width to make the scrollbar fatter */
+        }
+    
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #9b4dca, #764ba2); /* Purple gradient */
+            border-radius: 10px;
+        }
+    
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #6a2b91, #9b4dca); /* Darker purple gradient on hover */
+        }
+    
         .task {
             display: block;
         }
-
-        /* Responsive Adjustments */
+    
+        /* Responsive Adjustments for input type date */
         @media (max-width: 768px) {
             .todo-container {
                 padding: 20px;
             }
-
+    
             .row.g-2 {
                 flex-direction: column;
             }
-
+    
             .col-md-5,
             .col-md-3,
             .col-md-2 {
                 width: 100%;
                 margin-bottom: 10px;
             }
-
+    
             .btn {
                 font-size: 14px;
                 padding: 8px;
             }
-
+    
             h1 {
                 font-size: 22px;
             }
-
+    
+            .col-md-3 input[type="date"] {
+                width: 100%;
+                font-size: 14px;
+                padding: 10px;
+            }
+    
             /* Ensure buttons are not too large on small screens */
             .btn-primary,
             .btn-secondary,
@@ -97,43 +115,50 @@
                 padding: 10px;
             }
         }
-
+    
         @media (max-width: 480px) {
             body {
                 padding: 10px;
             }
-
+    
             .todo-container {
                 padding: 15px;
             }
-
+    
             h1 {
                 font-size: 18px;
             }
-
+    
             .btn {
                 font-size: 12px;
                 padding: 6px;
             }
-
+    
             .row.g-2 {
                 flex-direction: column;
             }
-
+    
             .col-md-5,
             .col-md-3,
             .col-md-2 {
                 margin-bottom: 12px;
             }
-
+    
             .col-md-5 input,
             .col-md-3 input,
             .col-md-2 select,
             .col-md-2 button {
                 width: 100%;
             }
+    
+            /* Ensure the date input is styled correctly */
+            .col-md-3 input[type="date"] {
+                width: 100%;
+                padding: 10px;
+                font-size: 14px;
+            }
         }
-    </style>
+    </style>        
 </head>
 
 <body>
@@ -210,7 +235,7 @@
 
             // Create the new task if no duplicates are found
             let li = document.createElement("li");
-            li.className = "list-group-item d-flex justify-content-between align-items-center task";
+            li.className = "list-group-item d-flex justify-content-between align-items-center task my-2";
             li.setAttribute("data-priority", priority);
             li.setAttribute("data-date", dueDate);
             li.innerHTML = ` 
@@ -242,7 +267,7 @@
         function deleteTask(btn) {
             let task = btn.parentElement.parentElement;
             task.classList.add("fade-out");
-            setTimeout(() => task.remove(), 300);
+            setTimeout(() => task.remove(), 400);
 
             // After deleting a task, ensure only 4 tasks are visible
             limitVisibleTasks();
